@@ -3,8 +3,10 @@ GLSpace
 
 Taking 3D websites to multiple screens.
 
+Code heavily borrowed from Gregg Tavares's project Happy Fun Times  (https://github.com/greggman/HappyFunTimes/tree/master/public/examples/syncThreeJS)
 
-This is project requires NodeJS to run. Download it from here http://nodejs.org/download
+
+This project requires NodeJS to run. Download it from here http://nodejs.org/download
 
 After that go to Command Prompt, navigate to the project directory and run
 
