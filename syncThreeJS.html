@@ -2,12 +2,6 @@
 <html>
 <head>
 
-  <META HTTP-EQUIV="Cache-Control" CONTENT="max-age=0">
-  <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
-  <META http-equiv="expires" content="0">
-  <META HTTP-EQUIV="Expires" CONTENT="Sat, 12 Oct 2013 1:00:00 GMT">
-  <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-
   <meta charset="utf-8">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -19,41 +13,42 @@
   <title>Sync Three.js</title>
   <link rel="stylesheet" href="syncThreeJS.css">
 
-  <iframe style="display: none;" id="i1" src="http://adnan-zahid.eu5.org/blog.php"></iframe>
-  <iframe style="display: none;" id="i2" src="http://adnan-zahid.eu5.org"></iframe>
-  <iframe style="display: none;" id="i3" src="http://adnan-zahid.eu5.org/services.php"></iframe>
+  <iframe style="width: 1024px; height: 1024px; display: none;" id="i1" src="http://www.google.com.pk/earth/explore/showcase"></iframe>
+  <iframe style="width: 1024px; height: 1024px; display: none;" id="i2" src="http://www.google.com.pk/earth/explore/showcase/liquidgalaxy.html"></iframe>
+  <iframe style="width: 1024px; height: 1024px; display: none;" id="i3" src="http://liquidgalaxy.endpoint.com"></iframe>
 
+  <script data-main="syncThreeJS.js" src="jquery.js"></script>
   <script data-main="syncThreeJS.js" src="three.js"></script>
   <script data-main="syncThreeJS.js" src="require.js"></script>
 
 </head>
 <body onkeypress="handleIt(event);">
 <style>
-  textarea {resize: none; float: left;}
-  table {display: none; position: fixed; z-index: 2; left:0px; top:0px;}
-  #ThreeJS {position: absolute; left:0px; top:50px;}
-  p {color: red; font-weight:900;}
+	textarea {resize: none; float: left;}
+	table {display: none; position: fixed; z-index: 2; left:0px; top:0px;}
+	#ThreeJS {position: absolute; left:0px; top:50px;}
+	p {color: red; font-weight:900;}
 </style>
 
 <table id="controls">
 <tr>
 <td><p>Left:</p></td>
 <td>
-  <textarea onfocus="this.select();" id="left" rows="1" cols="40">adnan-zahid.eu5.org/blog.php</textarea>
+  <textarea onfocus="this.select();" id="left" rows="1" cols="40">www.google.com.pk/earth/explore/showcase</textarea>
 </td>
 </tr>
 
 <tr>
 <td><p>Center:</p></td>
 <td>
-  <textarea onfocus="this.select();" id="center" rows="1" cols="40">adnan-zahid.eu5.org</textarea>
+  <textarea onfocus="this.select();" id="center" rows="1" cols="40">www.google.com.pk/earth/explore/showcase/liquidgalaxy.html</textarea>
 </td>
 </tr>
 
 <tr>
 <td><p>Right:</p></td>
 <td>
-  <textarea onfocus="this.select();" id="right" rows="1" cols="40">adnan-zahid.eu5.org/services.php</textarea>
+  <textarea onfocus="this.select();" id="right" rows="1" cols="40">liquidgalaxy.endpoint.com</textarea>
 </td>
 </tr>
 
