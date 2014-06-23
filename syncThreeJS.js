@@ -9,11 +9,11 @@ function go() {
 
 	if(document.activeElement.id=="left")
 		elements[0].src	= http + document.getElementById("left").value;
-	if(document.activeElement.id=="center")
+	else if(document.activeElement.id=="center")
 		elements[1].src	= http + document.getElementById("center").value;
-	if(document.activeElement.id=="right")
+	else if(document.activeElement.id=="right")
 		elements[2].src	= http + document.getElementById("right").value;
-	if(document.activeElement.id=="back")
+	else if(document.activeElement.id=="back")
 		elements[3].src	= http + document.getElementById("back").value;
 }
 
@@ -31,7 +31,7 @@ function $(id) {
   return document.getElementById(id);
 }
 
-var main = function(
+function main(
     GameServer,
     GameClient,
     ThreeJS,
@@ -87,13 +87,18 @@ var main = function(
 
       leftOffSet: 450,
       rightOffSet: 450,
+
+      leftOffAngle: 0,
+      rightOffAngle: 0,
+
+      firstMultiple: 1,
     }
   };
   Misc.applyUrlSettings(globals);
 
-  var noop = function() { };
+  function noop() { };
 
-  var handleSetMsg = function(data) {
+  function handleSetMsg(data) {
     Misc.copyProperties(data, globals.shared);
   };
 
@@ -159,7 +164,7 @@ var main = function(
 
   var rendererCSS;
 
-  var makeWebsite = function (positionX, positionZ, rotationY, website, notInverted, id) {
+  function makeWebsite(positionX, positionZ, rotationY, website, notInverted, id) {
   
     var planeMaterial   = new THREE.MeshBasicMaterial({color: 0x000000, opacity: 0.1, side: THREE.DoubleSide });
     var planeWidth = 1024;
@@ -199,7 +204,7 @@ var main = function(
   }
 
   var keyboard = new THREEx.KeyboardState();
-  var update = function () {
+  function update() {
 
     if ( keyboard.pressed("w") ) 
     {
@@ -212,6 +217,18 @@ var main = function(
 		globals.shared.leftOffSet += 3.25;
 		globals.shared.rightOffSet += 3.25;
 		camera.translateZ(10);
+    }
+    else if ( keyboard.pressed("a") ) 
+    {
+	  globals.shared.rightOffAngle -= 0;
+	  globals.shared.leftOffAngle += 0;
+      camera.rotation.y += 0.005;
+    }
+    else if ( keyboard.pressed("d") ) 
+    {
+	  globals.shared.rightOffAngle += 0;
+	  globals.shared.leftOffAngle -= 0;
+      camera.rotation.y -= 0.005;
     }
 
     else if ( keyboard.pressed("up") ) 
@@ -230,13 +247,105 @@ var main = function(
     { 
       camera.translateX(10);
     }
+    else if ( keyboard.pressed("r") ) 
+    {
+    	window.location = window.location;
+    }
 
+    else if ( keyboard.pressed("t") ) {
+
+    	if(cssX==0)
+    		globals.shared.cssObjectPosition.y ++;
+    }
+    else if ( keyboard.pressed("g") ) {
+
+    	if(cssX==0)
+    		globals.shared.cssObjectPosition.y --;
+    }
+    else if ( keyboard.pressed("f") ) {
+
+    	if(cssX==0)
+    		globals.shared.cssObjectPosition.x --;
+    }
+    else if ( keyboard.pressed("h") ) {
+
+    	if(cssX==0)
+    		globals.shared.cssObjectPosition.x ++;
+    }
+    else if ( keyboard.pressed("i") ) {
+
+    	if(cssX==0)
+    		globals.shared.cssObjectRotation.x += Math.PI*0.001;
+    }
+    else if ( keyboard.pressed("k") ) {
+
+    	if(cssX==0)
+    		globals.shared.cssObjectRotation.x -= Math.PI*0.001;
+    }
+    else if ( keyboard.pressed("j") ) {
+
+    	if(cssX==0)
+    		globals.shared.cssObjectRotation.y -= Math.PI*0.001;
+    }
+    else if ( keyboard.pressed("l") ) {
+
+    	if(cssX==0)
+    		globals.shared.cssObjectRotation.y += Math.PI*0.001;
+    }
+    else if ( keyboard.pressed("o") ) {
+
+    	if(cssX==0)
+    		alert("x: "+globals.shared.cssObjectPosition.x);
+    }
+    else if ( keyboard.pressed("p") ) {
+
+    	if(cssX==0)
+    		alert("y: "+globals.shared.cssObjectRotation.y);
+    }    
+    else if ( keyboard.pressed("z") ) {
+
+    	if(cssX==0)
+    		globals.shared.cssObjectPosition.z ++;
+    }
+    else if ( keyboard.pressed("x") ) {
+
+    	if(cssX==0)
+    		globals.shared.cssObjectPosition.z --;
+    }
+    else if ( keyboard.pressed("c") ) {
+
+    	if(cssX==0)
+    		alert(globals.shared.cssObjectPosition.z);
+    }
+    else if ( keyboard.pressed("v") ) {
+
+    	if(cssX==0)
+    		alert(globals.shared.cssObjectPosition.z);
+    }
+    else if ( keyboard.pressed("b") ) {
+
+    	if(cssX==0)
+    		globals.shared.firstMultiple -= 0.1;
+    }
+    else if ( keyboard.pressed("n") ) {
+
+    	if(cssX==0)
+    		globals.shared.firstMultiple += 0.1;
+    }
+
+    if(cssX == 4) {
+      server.broadcastCmd('set', { firstMultiple: globals.shared.firstMultiple });
+
+      server.broadcastCmd('set', { leftOffAngle: globals.shared.leftOffAngle });
+      server.broadcastCmd('set', { rightOffAngle: globals.shared.rightOffAngle });
       server.broadcastCmd('set', { leftOffSet: globals.shared.leftOffSet });
       server.broadcastCmd('set', { rightOffSet: globals.shared.rightOffSet });
       server.broadcastCmd('set', { cameraPosition: {x: camera.position.x, y: camera.position.y, z: camera.position.z }});
+      server.broadcastCmd('set', { cameraRotation: {x: camera.rotation.x, y: camera.rotation.y, z: camera.rotation.z }});
+  	}
   }
 
-  var render = function() {
+  function render() {
 
     if (Misc.resize(canvas)) {
       renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
@@ -247,16 +356,36 @@ var main = function(
         globals.x, globals.y,
         canvas.clientWidth, canvas.clientHeight);
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
-    camera.fov    = globals.shared.fieldOfView;
+
+    if(cssX == 0)
+	    camera.fov    = globals.shared.fieldOfView * globals.shared.firstMultiple;
+    if(cssX == 4)
+	    camera.fov    = globals.shared.fieldOfView;
+    if(cssX == 9)
+	    camera.fov    = globals.shared.fieldOfView;
+    
     camera.zNear  = globals.shared.zNear;
     camera.zFar   = globals.shared.zFar;
+
     camera.position.x = globals.shared.cameraPosition.x;
     camera.position.y = globals.shared.cameraPosition.y;
     camera.position.z = globals.shared.cameraPosition.z;
 
-    // camera.rotation.x = globals.shared.cameraRotation.x;
-    // camera.rotation.y = globals.shared.cameraRotation.y;
-    // camera.rotation.z = globals.shared.cameraRotation.z;
+    if(cssX == 0) {
+	    camera.rotation.x = globals.shared.cameraRotation.x;
+	    camera.rotation.y = globals.shared.cameraRotation.y + globals.shared.rightOffAngle;
+	    camera.rotation.z = globals.shared.cameraRotation.z;
+	}
+	else if(cssX == 4) {
+	    camera.rotation.x = globals.shared.cameraRotation.x;
+	    camera.rotation.y = globals.shared.cameraRotation.y;
+	    camera.rotation.z = globals.shared.cameraRotation.z;
+	}
+	else if(cssX == 9) {
+	    camera.rotation.x = globals.shared.cameraRotation.x;
+	    camera.rotation.y = globals.shared.cameraRotation.y + globals.shared.leftOffAngle;
+	    camera.rotation.z = globals.shared.cameraRotation.z;
+	}
 
 	if(cssX != 4){
 		if(document.getElementById("left").value != globals.shared.webpages.left){
@@ -277,16 +406,14 @@ var main = function(
 			document.getElementById("controls").style.display = "block";
 	}
 
-	// camera.fov    = globals.shared.fieldOfView;
-
 	if(cssX == 0){
 
-	    cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 700 + globals.shared.leftOffSet;
+	    cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 688 + globals.shared.leftOffSet;
 	    cssObjects[0].position.y = globals.shared.cssObjectPosition.y + 512;
 	    cssObjects[0].position.z = globals.shared.cssObjectPosition.z;
 
 	    cssObjects[0].rotation.x = globals.shared.cssObjectRotation.x;
-	    cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y + Math.PI*0.38;
+	    cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y + 0.05026548245743668 + Math.PI*0.38;
 	    cssObjects[0].rotation.z = globals.shared.cssObjectRotation.z;
 
 	    cssObjects[1].position.x = globals.shared.cssObjectPosition.x + globals.shared.leftOffSet;
@@ -297,12 +424,12 @@ var main = function(
 	    cssObjects[1].rotation.y = globals.shared.cssObjectRotation.y;
 	    cssObjects[1].rotation.z = globals.shared.cssObjectRotation.z;
 
-	    cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 320 + globals.shared.leftOffSet;
+	    cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 340 + globals.shared.leftOffSet;
 	    cssObjects[2].position.y = globals.shared.cssObjectPosition.y + 512;
 	    cssObjects[2].position.z = globals.shared.cssObjectPosition.z;
 
 	    cssObjects[2].rotation.x = globals.shared.cssObjectRotation.x;
-	    cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y - Math.PI*0.62;
+	    cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y + 0.0408407044966673 - Math.PI*0.62;
 	    cssObjects[2].rotation.z = globals.shared.cssObjectRotation.z;
 	}
 	else if(cssX == 4){
@@ -331,12 +458,12 @@ var main = function(
 	    cssObjects[2].rotation.z = globals.shared.cssObjectRotation.z;
 	}
 	else if(cssX == 9){
-	    cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 320 - globals.shared.rightOffSet;
+	    cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 340 - globals.shared.rightOffSet;
 	    cssObjects[0].position.y = globals.shared.cssObjectPosition.y + 512;
 	    cssObjects[0].position.z = globals.shared.cssObjectPosition.z;
 
 	    cssObjects[0].rotation.x = globals.shared.cssObjectRotation.x;
-	    cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y + Math.PI*0.62;
+	    cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y - 0.0408407044966673 + Math.PI*0.62;
 	    cssObjects[0].rotation.z = globals.shared.cssObjectRotation.z;
 
 		cssObjects[1].position.x = globals.shared.cssObjectPosition.x - globals.shared.rightOffSet;
@@ -347,12 +474,12 @@ var main = function(
 	    cssObjects[1].rotation.y = globals.shared.cssObjectRotation.y;
 	    cssObjects[1].rotation.z = globals.shared.cssObjectRotation.z;
 
-		cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 700 - globals.shared.rightOffSet;
+		cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 688 - globals.shared.rightOffSet;
 	    cssObjects[2].position.y = globals.shared.cssObjectPosition.y + 512;
 	    cssObjects[2].position.z = globals.shared.cssObjectPosition.z;
 
 	    cssObjects[2].rotation.x = globals.shared.cssObjectRotation.x;
-	    cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y - Math.PI*0.38;
+	    cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y - 0.05026548245743668 - Math.PI*0.38;
 	    cssObjects[2].rotation.z = globals.shared.cssObjectRotation.z;
 	}
 
@@ -389,6 +516,8 @@ var main = function(
   makeWebsite(510, 0, -Math.PI*0.5, http + document.getElementById("right").value, 1, "i3");
   render();
 };
+
+requirejs.config({waitSeconds: 0});
 
 requirejs(
   [ 'gameserver',
