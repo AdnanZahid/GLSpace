@@ -9,22 +9,22 @@ var cssX = loc.charAt(loc.indexOf("x:")+2);
 
 function go() {
 
-	if(document.activeElement.id=="left")
-		elements[0].src	= http + document.getElementById("left").value;
-	else if(document.activeElement.id=="center")
-		elements[1].src	= http + document.getElementById("center").value;
-	else if(document.activeElement.id=="right")
-		elements[2].src	= http + document.getElementById("right").value;
-	else if(document.activeElement.id=="back")
-		elements[3].src	= http + document.getElementById("back").value;
+  if(document.activeElement.id=="left")
+    elements[0].src = http + document.getElementById("left").value;
+  else if(document.activeElement.id=="center")
+    elements[1].src = http + document.getElementById("center").value;
+  else if(document.activeElement.id=="right")
+    elements[2].src = http + document.getElementById("right").value;
+  else if(document.activeElement.id=="back")
+    elements[3].src = http + document.getElementById("back").value;
 }
 
 function handleIt(e) {
 
-  	if (e.which == 13){
-	    go();
-	    e.preventDefault();
-	}
+    if (e.which == 13){
+      go();
+      e.preventDefault();
+  }
 }
 
 $(document).ready(function(){
@@ -145,7 +145,7 @@ function main(
   rendererCSS.domElement.appendChild( renderer.domElement );
 
   camera = new THREE.PerspectiveCamera( 20, 1, 1, 10000 );
-  camera.position.set(0,500,800);
+  // camera.position.set(0,500,800);
 
   scene = new THREE.Scene();
   scene.add(camera);
@@ -233,7 +233,7 @@ function main(
 
     scene.add(planeMesh);
 
-    var	element=document.getElementById(id);
+    var element=document.getElementById(id);
 
     elements.push(element);
 
@@ -263,17 +263,17 @@ function main(
 
     if ( keyboard.pressed("w") ) 
     {
-  		globals.shared.leftOffSet -= 3.25;
-  		globals.shared.rightOffSet -= 3.25;
+      globals.shared.leftOffSet -= 3.25;
+      globals.shared.rightOffSet -= 3.25;
       zeOffset -= 3.25;
       globals.shared.zOffSet = zeOffset;
-  		camera.translateZ(-10);
+      camera.translateZ(-10);
     }
     else if ( keyboard.pressed("s") ) 
     {
-  		globals.shared.leftOffSet += 3.25;
-  		globals.shared.rightOffSet += 3.25;
-  		zeOffset += 3.25;
+      globals.shared.leftOffSet += 3.25;
+      globals.shared.rightOffSet += 3.25;
+      zeOffset += 3.25;
       globals.shared.zOffSet = zeOffset;
       camera.translateZ(10);
     }
@@ -312,11 +312,24 @@ function main(
     }
     else if ( keyboard.pressed("r") ) 
     {
-    	window.location = window.location;
+      window.location = window.location;
+    }
+
+    else if ( keyboard.pressed("f") ) {
+        globals.shared.cameraPosition.x -= 5;
+    }
+    else if ( keyboard.pressed("h") ) {
+        globals.shared.cameraPosition.x += 5;
+    }
+    else if ( keyboard.pressed("t") ) {
+        globals.shared.cameraPosition.y -= 5;
+    }
+    else if ( keyboard.pressed("g") ) {
+        globals.shared.cameraPosition.y += 5;
     }
 
     else if ( keyboard.pressed("t") ) {
-    		alert(globals.shared.cameraRotation.y);
+        alert(globals.shared.cameraPosition.y);
     }
 
     if(cssX == 4) {
@@ -325,7 +338,7 @@ function main(
       server.broadcastCmd('set', { rightOffSet: globals.shared.rightOffSet });
       server.broadcastCmd('set', { cameraPosition: {x: camera.position.x, y: camera.position.y, z: camera.position.z }});
       server.broadcastCmd('set', { cameraRotation: {x: camera.rotation.x, y: camera.rotation.y, z: camera.rotation.z }});
-  	}
+    }
   }
 
   function render() {
@@ -340,7 +353,7 @@ function main(
         canvas.clientWidth, canvas.clientHeight);
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
 
-	  camera.fov    = globals.shared.fieldOfView;
+    camera.fov    = globals.shared.fieldOfView;
     
     camera.zNear  = globals.shared.zNear;
     camera.zFar   = globals.shared.zFar;
@@ -353,103 +366,103 @@ function main(
     camera.rotation.y = globals.shared.cameraRotation.y;
     camera.rotation.z = globals.shared.cameraRotation.z;
 
-	if(cssX != 4){
-		if(document.getElementById("left").value != globals.shared.webpages.left){
-			document.getElementById("left").value = globals.shared.webpages.left;
-			elements[0].src	= http + document.getElementById("left").value;
-		}
-		else if(document.getElementById("center").value != globals.shared.webpages.center){
-			document.getElementById("center").value = globals.shared.webpages.center;
-			elements[1].src	= http + document.getElementById("center").value;
-		}
-		else if(document.getElementById("right").value != globals.shared.webpages.right){
-			document.getElementById("right").value = globals.shared.webpages.right;
-			elements[2].src	= http + document.getElementById("right").value;
-		}
-	}
-	else{
-		if(document.getElementById("controls").style.display != "block")
-			document.getElementById("controls").style.display = "block";
-	}
+  if(cssX != 4){
+    if(document.getElementById("left").value != globals.shared.webpages.left){
+      document.getElementById("left").value = globals.shared.webpages.left;
+      elements[0].src = http + document.getElementById("left").value;
+    }
+    else if(document.getElementById("center").value != globals.shared.webpages.center){
+      document.getElementById("center").value = globals.shared.webpages.center;
+      elements[1].src = http + document.getElementById("center").value;
+    }
+    else if(document.getElementById("right").value != globals.shared.webpages.right){
+      document.getElementById("right").value = globals.shared.webpages.right;
+      elements[2].src = http + document.getElementById("right").value;
+    }
+  }
+  else{
+    if(document.getElementById("controls").style.display != "block")
+      document.getElementById("controls").style.display = "block";
+  }
 
-	// if(cssX == 0){
+  // if(cssX == 0){
 
-	//     cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 988 + globals.shared.leftOffSet;
-	//     cssObjects[0].position.y = globals.shared.cssObjectPosition.y + 512;
-	//     cssObjects[0].position.z = globals.shared.cssObjectPosition.z;
+  //     cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 988 + globals.shared.leftOffSet;
+  //     cssObjects[0].position.y = globals.shared.cssObjectPosition.y + 512;
+  //     cssObjects[0].position.z = globals.shared.cssObjectPosition.z;
 
-	//     cssObjects[0].rotation.x = globals.shared.cssObjectRotation.x;
-	//     cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y + 0.05026548245743668 + Math.PI*0.38;
-	//     cssObjects[0].rotation.z = globals.shared.cssObjectRotation.z;
+  //     cssObjects[0].rotation.x = globals.shared.cssObjectRotation.x;
+  //     cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y + 0.05026548245743668 + Math.PI*0.38;
+  //     cssObjects[0].rotation.z = globals.shared.cssObjectRotation.z;
 
-	//     cssObjects[1].position.x = globals.shared.cssObjectPosition.x + globals.shared.leftOffSet;
-	//     cssObjects[1].position.y = globals.shared.cssObjectPosition.y + 512;
-	//     cssObjects[1].position.z = globals.shared.cssObjectPosition.z - 510;
+  //     cssObjects[1].position.x = globals.shared.cssObjectPosition.x + globals.shared.leftOffSet;
+  //     cssObjects[1].position.y = globals.shared.cssObjectPosition.y + 512;
+  //     cssObjects[1].position.z = globals.shared.cssObjectPosition.z - 510;
 
-	//     cssObjects[1].rotation.x = globals.shared.cssObjectRotation.x;
-	//     cssObjects[1].rotation.y = globals.shared.cssObjectRotation.y;
-	//     cssObjects[1].rotation.z = globals.shared.cssObjectRotation.z;
+  //     cssObjects[1].rotation.x = globals.shared.cssObjectRotation.x;
+  //     cssObjects[1].rotation.y = globals.shared.cssObjectRotation.y;
+  //     cssObjects[1].rotation.z = globals.shared.cssObjectRotation.z;
 
-	//     cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 640 + globals.shared.leftOffSet;
-	//     cssObjects[2].position.y = globals.shared.cssObjectPosition.y + 512;
-	//     cssObjects[2].position.z = globals.shared.cssObjectPosition.z + globals.shared.zOffSet;
+  //     cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 640 + globals.shared.leftOffSet;
+  //     cssObjects[2].position.y = globals.shared.cssObjectPosition.y + 512;
+  //     cssObjects[2].position.z = globals.shared.cssObjectPosition.z + globals.shared.zOffSet;
 
-	//     cssObjects[2].rotation.x = globals.shared.cssObjectRotation.x;
-	//     cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y + 0.0408407044966673 - Math.PI*0.62;
-	//     cssObjects[2].rotation.z = globals.shared.cssObjectRotation.z;
-	// }
-	// else if(cssX == 4){
-	//     cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 810;
-	//     cssObjects[0].position.y = globals.shared.cssObjectPosition.y + 512;
-	//     cssObjects[0].position.z = globals.shared.cssObjectPosition.z;
+  //     cssObjects[2].rotation.x = globals.shared.cssObjectRotation.x;
+  //     cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y + 0.0408407044966673 - Math.PI*0.62;
+  //     cssObjects[2].rotation.z = globals.shared.cssObjectRotation.z;
+  // }
+  // else if(cssX == 4){
+  //     cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 810;
+  //     cssObjects[0].position.y = globals.shared.cssObjectPosition.y + 512;
+  //     cssObjects[0].position.z = globals.shared.cssObjectPosition.z;
 
-	//     cssObjects[0].rotation.x = globals.shared.cssObjectRotation.x;
-	//     cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y + Math.PI*0.5;
-	//     cssObjects[0].rotation.z = globals.shared.cssObjectRotation.z;
+  //     cssObjects[0].rotation.x = globals.shared.cssObjectRotation.x;
+  //     cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y + Math.PI*0.5;
+  //     cssObjects[0].rotation.z = globals.shared.cssObjectRotation.z;
 
- //  		cssObjects[1].position.x = globals.shared.cssObjectPosition.x;
-	//     cssObjects[1].position.y = globals.shared.cssObjectPosition.y + 512;
-	//     cssObjects[1].position.z = globals.shared.cssObjectPosition.z - 510;
+ //     cssObjects[1].position.x = globals.shared.cssObjectPosition.x;
+  //     cssObjects[1].position.y = globals.shared.cssObjectPosition.y + 512;
+  //     cssObjects[1].position.z = globals.shared.cssObjectPosition.z - 510;
 
-	//     cssObjects[1].rotation.x = globals.shared.cssObjectRotation.x;
-	//     cssObjects[1].rotation.y = globals.shared.cssObjectRotation.y;
-	//     cssObjects[1].rotation.z = globals.shared.cssObjectRotation.z;
+  //     cssObjects[1].rotation.x = globals.shared.cssObjectRotation.x;
+  //     cssObjects[1].rotation.y = globals.shared.cssObjectRotation.y;
+  //     cssObjects[1].rotation.z = globals.shared.cssObjectRotation.z;
 
- //  		cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 810;
-	//     cssObjects[2].position.y = globals.shared.cssObjectPosition.y + 512;
-	//     cssObjects[2].position.z = globals.shared.cssObjectPosition.z;
+ //     cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 810;
+  //     cssObjects[2].position.y = globals.shared.cssObjectPosition.y + 512;
+  //     cssObjects[2].position.z = globals.shared.cssObjectPosition.z;
 
-	//     cssObjects[2].rotation.x = globals.shared.cssObjectRotation.x;
-	//     cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y - Math.PI*0.5;
-	//     cssObjects[2].rotation.z = globals.shared.cssObjectRotation.z;
-	// }
-	// else if(cssX == 9){
-	//     cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 640 - globals.shared.rightOffSet;
-	//     cssObjects[0].position.y = globals.shared.cssObjectPosition.y + 512;
-	//     cssObjects[0].position.z = globals.shared.cssObjectPosition.z;
+  //     cssObjects[2].rotation.x = globals.shared.cssObjectRotation.x;
+  //     cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y - Math.PI*0.5;
+  //     cssObjects[2].rotation.z = globals.shared.cssObjectRotation.z;
+  // }
+  // else if(cssX == 9){
+  //     cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 640 - globals.shared.rightOffSet;
+  //     cssObjects[0].position.y = globals.shared.cssObjectPosition.y + 512;
+  //     cssObjects[0].position.z = globals.shared.cssObjectPosition.z;
 
-	//     cssObjects[0].rotation.x = globals.shared.cssObjectRotation.x;
-	//     cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y - 0.0408407044966673 + Math.PI*0.62;
-	//     cssObjects[0].rotation.z = globals.shared.cssObjectRotation.z;
+  //     cssObjects[0].rotation.x = globals.shared.cssObjectRotation.x;
+  //     cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y - 0.0408407044966673 + Math.PI*0.62;
+  //     cssObjects[0].rotation.z = globals.shared.cssObjectRotation.z;
 
- //  		cssObjects[1].position.x = globals.shared.cssObjectPosition.x - globals.shared.rightOffSet;
-	//     cssObjects[1].position.y = globals.shared.cssObjectPosition.y + 512;
-	//     cssObjects[1].position.z = globals.shared.cssObjectPosition.z - 510;
+ //     cssObjects[1].position.x = globals.shared.cssObjectPosition.x - globals.shared.rightOffSet;
+  //     cssObjects[1].position.y = globals.shared.cssObjectPosition.y + 512;
+  //     cssObjects[1].position.z = globals.shared.cssObjectPosition.z - 510;
 
-	//     cssObjects[1].rotation.x = globals.shared.cssObjectRotation.x;
-	//     cssObjects[1].rotation.y = globals.shared.cssObjectRotation.y;
-	//     cssObjects[1].rotation.z = globals.shared.cssObjectRotation.z;
+  //     cssObjects[1].rotation.x = globals.shared.cssObjectRotation.x;
+  //     cssObjects[1].rotation.y = globals.shared.cssObjectRotation.y;
+  //     cssObjects[1].rotation.z = globals.shared.cssObjectRotation.z;
 
- //  		cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 988 - globals.shared.rightOffSet;
-	//     cssObjects[2].position.y = globals.shared.cssObjectPosition.y + 512;
-	//     cssObjects[2].position.z = globals.shared.cssObjectPosition.z;
+ //     cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 988 - globals.shared.rightOffSet;
+  //     cssObjects[2].position.y = globals.shared.cssObjectPosition.y + 512;
+  //     cssObjects[2].position.z = globals.shared.cssObjectPosition.z;
 
-	//     cssObjects[2].rotation.x = globals.shared.cssObjectRotation.x;
-	//     cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y - 0.05026548245743668 - Math.PI*0.38;
-	//     cssObjects[2].rotation.z = globals.shared.cssObjectRotation.z;
-	// }
+  //     cssObjects[2].rotation.x = globals.shared.cssObjectRotation.x;
+  //     cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y - 0.05026548245743668 - Math.PI*0.38;
+  //     cssObjects[2].rotation.z = globals.shared.cssObjectRotation.z;
+  // }
 
-	  // elements[0].style.display = "block";
+    // elements[0].style.display = "block";
    //  elements[1].style.display = "block";
    //  elements[2].style.display = "block";
 
@@ -477,15 +490,15 @@ function main(
 
     requestAnimationFrame(render);
 
-	if(document.activeElement.id!="left" && document.activeElement.id!="center" && document.activeElement.id!="right" && document.activeElement.id!="back") {
-    	update();
-	}
-	else {
-	    if ( keyboard.pressed("enter") ) 
-	    {
-    		server.broadcastCmd('set', { webpages: {left: document.getElementById("left").value, center: document.getElementById("center").value, right: document.getElementById("right").value}});
-	    }
-	}
+  if(document.activeElement.id!="left" && document.activeElement.id!="center" && document.activeElement.id!="right" && document.activeElement.id!="back") {
+      update();
+  }
+  else {
+      if ( keyboard.pressed("enter") ) 
+      {
+        server.broadcastCmd('set', { webpages: {left: document.getElementById("left").value, center: document.getElementById("center").value, right: document.getElementById("right").value}});
+      }
+  }
   };
   
   // makeWebsite(-810, 0, Math.PI*0.5, http + document.getElementById("left").value, 1, "i1");
