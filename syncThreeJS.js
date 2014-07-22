@@ -3,6 +3,8 @@ var elements = [];
 var server;
 var zeOffset = 204;
 var scene, camera;
+var source;
+var video;
 
 var loc = document.URL;
 var cssX = loc.charAt(loc.indexOf("x:")+2);
@@ -24,7 +26,7 @@ function handleIt(e) {
     if (e.which == 13){
       go();
       e.preventDefault();
-  }
+    }
 }
 
 $(document).ready(function(){
@@ -54,6 +56,8 @@ function main(
 
       zNear: 1,
       zFar: 10000,
+
+      source: null,
 
       useWindowPosition: false,
 
@@ -366,106 +370,6 @@ function main(
     camera.rotation.y = globals.shared.cameraRotation.y;
     camera.rotation.z = globals.shared.cameraRotation.z;
 
-  if(cssX != 4){
-    if(document.getElementById("left").value != globals.shared.webpages.left){
-      document.getElementById("left").value = globals.shared.webpages.left;
-      elements[0].src = http + document.getElementById("left").value;
-    }
-    else if(document.getElementById("center").value != globals.shared.webpages.center){
-      document.getElementById("center").value = globals.shared.webpages.center;
-      elements[1].src = http + document.getElementById("center").value;
-    }
-    else if(document.getElementById("right").value != globals.shared.webpages.right){
-      document.getElementById("right").value = globals.shared.webpages.right;
-      elements[2].src = http + document.getElementById("right").value;
-    }
-  }
-  else{
-    if(document.getElementById("controls").style.display != "block")
-      document.getElementById("controls").style.display = "block";
-  }
-
-  // if(cssX == 0){
-
-  //     cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 988 + globals.shared.leftOffSet;
-  //     cssObjects[0].position.y = globals.shared.cssObjectPosition.y + 512;
-  //     cssObjects[0].position.z = globals.shared.cssObjectPosition.z;
-
-  //     cssObjects[0].rotation.x = globals.shared.cssObjectRotation.x;
-  //     cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y + 0.05026548245743668 + Math.PI*0.38;
-  //     cssObjects[0].rotation.z = globals.shared.cssObjectRotation.z;
-
-  //     cssObjects[1].position.x = globals.shared.cssObjectPosition.x + globals.shared.leftOffSet;
-  //     cssObjects[1].position.y = globals.shared.cssObjectPosition.y + 512;
-  //     cssObjects[1].position.z = globals.shared.cssObjectPosition.z - 510;
-
-  //     cssObjects[1].rotation.x = globals.shared.cssObjectRotation.x;
-  //     cssObjects[1].rotation.y = globals.shared.cssObjectRotation.y;
-  //     cssObjects[1].rotation.z = globals.shared.cssObjectRotation.z;
-
-  //     cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 640 + globals.shared.leftOffSet;
-  //     cssObjects[2].position.y = globals.shared.cssObjectPosition.y + 512;
-  //     cssObjects[2].position.z = globals.shared.cssObjectPosition.z + globals.shared.zOffSet;
-
-  //     cssObjects[2].rotation.x = globals.shared.cssObjectRotation.x;
-  //     cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y + 0.0408407044966673 - Math.PI*0.62;
-  //     cssObjects[2].rotation.z = globals.shared.cssObjectRotation.z;
-  // }
-  // else if(cssX == 4){
-  //     cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 810;
-  //     cssObjects[0].position.y = globals.shared.cssObjectPosition.y + 512;
-  //     cssObjects[0].position.z = globals.shared.cssObjectPosition.z;
-
-  //     cssObjects[0].rotation.x = globals.shared.cssObjectRotation.x;
-  //     cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y + Math.PI*0.5;
-  //     cssObjects[0].rotation.z = globals.shared.cssObjectRotation.z;
-
- //     cssObjects[1].position.x = globals.shared.cssObjectPosition.x;
-  //     cssObjects[1].position.y = globals.shared.cssObjectPosition.y + 512;
-  //     cssObjects[1].position.z = globals.shared.cssObjectPosition.z - 510;
-
-  //     cssObjects[1].rotation.x = globals.shared.cssObjectRotation.x;
-  //     cssObjects[1].rotation.y = globals.shared.cssObjectRotation.y;
-  //     cssObjects[1].rotation.z = globals.shared.cssObjectRotation.z;
-
- //     cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 810;
-  //     cssObjects[2].position.y = globals.shared.cssObjectPosition.y + 512;
-  //     cssObjects[2].position.z = globals.shared.cssObjectPosition.z;
-
-  //     cssObjects[2].rotation.x = globals.shared.cssObjectRotation.x;
-  //     cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y - Math.PI*0.5;
-  //     cssObjects[2].rotation.z = globals.shared.cssObjectRotation.z;
-  // }
-  // else if(cssX == 9){
-  //     cssObjects[0].position.x = globals.shared.cssObjectPosition.x - 640 - globals.shared.rightOffSet;
-  //     cssObjects[0].position.y = globals.shared.cssObjectPosition.y + 512;
-  //     cssObjects[0].position.z = globals.shared.cssObjectPosition.z;
-
-  //     cssObjects[0].rotation.x = globals.shared.cssObjectRotation.x;
-  //     cssObjects[0].rotation.y = globals.shared.cssObjectRotation.y - 0.0408407044966673 + Math.PI*0.62;
-  //     cssObjects[0].rotation.z = globals.shared.cssObjectRotation.z;
-
- //     cssObjects[1].position.x = globals.shared.cssObjectPosition.x - globals.shared.rightOffSet;
-  //     cssObjects[1].position.y = globals.shared.cssObjectPosition.y + 512;
-  //     cssObjects[1].position.z = globals.shared.cssObjectPosition.z - 510;
-
-  //     cssObjects[1].rotation.x = globals.shared.cssObjectRotation.x;
-  //     cssObjects[1].rotation.y = globals.shared.cssObjectRotation.y;
-  //     cssObjects[1].rotation.z = globals.shared.cssObjectRotation.z;
-
- //     cssObjects[2].position.x = globals.shared.cssObjectPosition.x + 988 - globals.shared.rightOffSet;
-  //     cssObjects[2].position.y = globals.shared.cssObjectPosition.y + 512;
-  //     cssObjects[2].position.z = globals.shared.cssObjectPosition.z;
-
-  //     cssObjects[2].rotation.x = globals.shared.cssObjectRotation.x;
-  //     cssObjects[2].rotation.y = globals.shared.cssObjectRotation.y - 0.05026548245743668 - Math.PI*0.38;
-  //     cssObjects[2].rotation.z = globals.shared.cssObjectRotation.z;
-  // }
-
-    // elements[0].style.display = "block";
-   //  elements[1].style.display = "block";
-   //  elements[2].style.display = "block";
-
     camera.updateProjectionMatrix();
 
     if (globals.shared.useWindowPosition) {
@@ -474,8 +378,6 @@ function main(
     }
 
     rendererCSS.render( cssScene, camera );
-
-    // renderer.render(scene, camera);
 
     if(video != null){
       if ( video.readyState === video.HAVE_ENOUGH_DATA ) 
@@ -500,6 +402,260 @@ function main(
       }
   }
   };
+
+  if(cssX == 0){
+    var connection = new RTCMultiConnection('1');
+                connection.session = {
+                    screen: true,
+                    oneway: true
+                };
+
+                connection.onstream = function(e) {
+                  video = e.mediaElement;
+
+                  video.play();
+                  document.body.appendChild( video );
+                };
+
+                connection.onstreamended = function(e) {
+                    e.mediaElement.style.opacity = 0;
+                    setTimeout(function() {
+                        if (e.mediaElement.parentNode) {
+                            e.mediaElement.parentNode.removeChild(e.mediaElement);
+                        }
+                        scaleVideos();
+                    }, 1000);
+                };
+
+                //slave
+                var sessions = {};
+                connection.onNewSession = function(session) {
+                    if (sessions[session.sessionid]) return;
+                    sessions[session.sessionid] = session;
+
+                    if (!session) throw 'No such session exists.';
+
+                    connection.join(session);
+                };
+
+                connection.connect();
+
+                function scaleVideos() {
+                    var videos = document.querySelectorAll('video'),
+                        length = videos.length, video;
+
+                    var minus = 130;
+                    var windowHeight = 700;
+                    var windowWidth = 600;
+                    var windowAspectRatio = windowWidth / windowHeight;
+                    var videoAspectRatio = 4 / 3;
+                    var blockAspectRatio;
+                    var tempVideoWidth = 0;
+                    var maxVideoWidth = 0;
+
+                    for (var i = length; i > 0; i--) {
+                        blockAspectRatio = i * videoAspectRatio / Math.ceil(length / i);
+                        if (blockAspectRatio <= windowAspectRatio) {
+                            tempVideoWidth = videoAspectRatio * windowHeight / Math.ceil(length / i);
+                        } else {
+                            tempVideoWidth = windowWidth / i;
+                        }
+                        if (tempVideoWidth > maxVideoWidth)
+                            maxVideoWidth = tempVideoWidth;
+                    }
+                    for (var i = 0; i < length; i++) {
+                        video = videos[i];
+                        if (video)
+                            video.width = maxVideoWidth - minus;
+                    }
+                }
+
+                window.onresize = scaleVideos;
+  }
+
+  else if(cssX == 9){
+    var connection = new RTCMultiConnection('1');
+                connection.session = {
+                    screen: true,
+                    oneway: true
+                };
+
+                connection.onstream = function(e) {
+                  video = e.mediaElement;
+
+                  video.play();
+                  document.body.appendChild( video );
+                };
+
+                connection.onstreamended = function(e) {
+                    e.mediaElement.style.opacity = 0;
+                    setTimeout(function() {
+                        if (e.mediaElement.parentNode) {
+                            e.mediaElement.parentNode.removeChild(e.mediaElement);
+                        }
+                        scaleVideos();
+                    }, 1000);
+                };
+
+                //slave
+                var sessions = {};
+                connection.onNewSession = function(session) {
+                    if (sessions[session.sessionid]) return;
+                    sessions[session.sessionid] = session;
+
+                    if (!session) throw 'No such session exists.';
+
+                    connection.join(session);
+                };
+
+                connection.connect();
+
+                function scaleVideos() {
+                    var videos = document.querySelectorAll('video'),
+                        length = videos.length, video;
+
+                    var minus = 130;
+                    var windowHeight = 700;
+                    var windowWidth = 600;
+                    var windowAspectRatio = windowWidth / windowHeight;
+                    var videoAspectRatio = 4 / 3;
+                    var blockAspectRatio;
+                    var tempVideoWidth = 0;
+                    var maxVideoWidth = 0;
+
+                    for (var i = length; i > 0; i--) {
+                        blockAspectRatio = i * videoAspectRatio / Math.ceil(length / i);
+                        if (blockAspectRatio <= windowAspectRatio) {
+                            tempVideoWidth = videoAspectRatio * windowHeight / Math.ceil(length / i);
+                        } else {
+                            tempVideoWidth = windowWidth / i;
+                        }
+                        if (tempVideoWidth > maxVideoWidth)
+                            maxVideoWidth = tempVideoWidth;
+                    }
+                    for (var i = 0; i < length; i++) {
+                        video = videos[i];
+                        if (video)
+                            video.width = maxVideoWidth - minus;
+                    }
+                }
+
+                window.onresize = scaleVideos;
+  }
+
+  else if(cssX == 4){
+    var connection = new RTCMultiConnection('1');
+                connection.session = {
+                    screen: true,
+                    oneway: true
+                };
+
+                connection.onstream = function(e) {
+                  video = e.mediaElement;
+
+                  video.play();
+                  document.body.appendChild( video );
+                };
+
+                connection.onstreamended = function(e) {
+                    e.mediaElement.style.opacity = 0;
+                    setTimeout(function() {
+                        if (e.mediaElement.parentNode) {
+                            e.mediaElement.parentNode.removeChild(e.mediaElement);
+                        }
+                        scaleVideos();
+                    }, 1000);
+                };
+
+                //master
+                connection.open();
+
+                connection.connect();
+
+                function scaleVideos() {
+                    var videos = document.querySelectorAll('video'),
+                        length = videos.length, video;
+
+                    var minus = 130;
+                    var windowHeight = 700;
+                    var windowWidth = 600;
+                    var windowAspectRatio = windowWidth / windowHeight;
+                    var videoAspectRatio = 4 / 3;
+                    var blockAspectRatio;
+                    var tempVideoWidth = 0;
+                    var maxVideoWidth = 0;
+
+                    for (var i = length; i > 0; i--) {
+                        blockAspectRatio = i * videoAspectRatio / Math.ceil(length / i);
+                        if (blockAspectRatio <= windowAspectRatio) {
+                            tempVideoWidth = videoAspectRatio * windowHeight / Math.ceil(length / i);
+                        } else {
+                            tempVideoWidth = windowWidth / i;
+                        }
+                        if (tempVideoWidth > maxVideoWidth)
+                            maxVideoWidth = tempVideoWidth;
+                    }
+                    for (var i = 0; i < length; i++) {
+                        video = videos[i];
+                        if (video)
+                            video.width = maxVideoWidth - minus;
+                    }
+                }
+
+                window.onresize = scaleVideos;
+  }
+
+  videoImage = document.createElement( 'canvas' );
+  videoImage.width = 1024;
+  videoImage.height = 735;
+
+  videoImageContext = videoImage.getContext( '2d' );
+  // background color if no video present
+  videoImageContext.fillStyle = '#000000';
+  videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+
+  videoTexture = new THREE.Texture( videoImage );
+  videoTexture.minFilter = THREE.LinearFilter;
+  videoTexture.magFilter = THREE.LinearFilter;
+  
+  var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true, side:THREE.DoubleSide } );
+  // the geometry on which the movie will be displayed;
+  //    movie image will be scaled to fit these dimensions.
+  var movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
+  var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+  movieScreen.position.set(-120,700,600);
+  movieScreen.rotation.set(0,Math.PI*0.5,0);
+  scene.add(movieScreen);
+
+  var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true, side:THREE.DoubleSide } );
+  // the geometry on which the movie will be displayed;
+  //    movie image will be scaled to fit these dimensions.
+  var movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
+  var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+  movieScreen.position.set(0,700,480);
+  scene.add(movieScreen);
+
+  var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true, side:THREE.DoubleSide } );
+  // the geometry on which the movie will be displayed;
+  //    movie image will be scaled to fit these dimensions.
+  var movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
+  var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+  movieScreen.position.set(120,700,600);
+  movieScreen.rotation.set(0,-Math.PI*0.5,0);
+  scene.add(movieScreen);
+
+  var floorTexture = new THREE.ImageUtils.loadTexture( 'metalFloor.jpg' );
+  floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
+  floorTexture.repeat.set( 10, 10 );
+  var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+  var floorGeometry = new THREE.PlaneGeometry(240, 240, 10, 10);
+  var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+  floor.position.set(0,650,600);
+  floor.rotation.x = Math.PI / 2;
+  scene.add(floor);
+  
+  camera.position.set(0,500,800);
+  camera.lookAt(movieScreen.position);
   
   // makeWebsite(-810, 0, Math.PI*0.5, http + document.getElementById("left").value, 1, "i1");
   // makeWebsite(0, -510, 0, http + document.getElementById("center").value, 1, "i2");
