@@ -1,12 +1,5 @@
 <!DOCTYPE html>
 <html>
-<script type="text/javascript">
-  var videos = [];
-  var videoImages = [];
-  var videoImageContexts = [];
-  var videoTextures = [];
-  var movieMaterials = [];
-</script>
 <head>
 
   <title>Sync Three.js</title>
@@ -15,8 +8,10 @@
   <script data-main="syncThreeJS.js" src="jquery.js"></script>
   <script data-main="syncThreeJS.js" src="three.js"></script>
   <script data-main="syncThreeJS.js" src="require.js"></script>
-  <script data-main="syncThreeJS.js" src="//cdn.webrtc-experiment.com/firebase.js"> </script>
-  <script data-main="syncThreeJS.js" src="//cdn.webrtc-experiment.com/RTCMultiConnection.js"> </script>
+
+  <script src="https://www.rtcmulticonnection.org/latest.js"></script>
+  <script src="//cdn.webrtc-experiment.com/firebase.js"></script>
+  <script src="//cdn.webrtc-experiment.com/getScreenId.js"></script>
 
 </head>
 <body onkeypress="handleIt(event);">
@@ -27,12 +22,13 @@
   #ThreeJS {position: absolute; left:0px; top:50px;}
   p {color: red; font-weight:900;}
   .experiment {position: fixed; z-index: 2; left:0px; top:0px;}
-  button {display: none;}
+  button {display: none; margin-left: 200px; position: fixed; z-index: 2; left:0px;}
 </style>
 
-<button style="margin-left: 200px; position: fixed; z-index: 2; left:0px; top:0px;" id="firstButton">1</button>
-<button style="margin-left: 200px; position: fixed; z-index: 2; left:0px; top:25px;" id="secondButton">2</button>
-<button style="margin-left: 200px; position: fixed; z-index: 2; left:0px; top:50px;" id="thirdButton">3</button>
+<button style="top: 0px;" id="btnCapture1stScreen">1</button>
+<button style="top: 25px;" id="btnCapture2ndScreen">2</button>
+<button style="top: 50px;" id="btnCapture3rdScreen">3</button>
+<button style="top: 75px;" id="btnStartRoom">Start</button>
 
 <table id="controls">
 <tr>

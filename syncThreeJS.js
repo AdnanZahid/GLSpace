@@ -5,6 +5,11 @@ var zeOffset = 204;
 var scene, camera;
 var source;
 var video;
+var videos = [];
+var videoImages = [];
+var videoImageContexts = [];
+var videoTextures = [];
+var movieMaterials = [];
 
 var loc = document.URL;
 var cssX = loc.charAt(loc.indexOf("x:")+2);
@@ -379,12 +384,30 @@ function main(
 
     rendererCSS.render( cssScene, camera );
 
-    if(video != null){
-      if ( video.readyState === video.HAVE_ENOUGH_DATA ) 
+    if(videos[0] != null){
+      if ( videos[0].readyState === videos[0].HAVE_ENOUGH_DATA ) 
       {
-        videoImageContext.drawImage( video, 0, 0 );
-        if ( videoTexture ) 
-          videoTexture.needsUpdate = true;
+        videoImageContexts[0].drawImage( videos[0], 0, 0 );
+        if ( videoTextures[0] ) 
+          videoTextures[0].needsUpdate = true;
+      }
+    }
+
+    if(videos[1] != null){
+      if ( videos[1].readyState === videos[1].HAVE_ENOUGH_DATA ) 
+      {
+        videoImageContexts[1].drawImage( videos[1], 0, 0 );
+        if ( videoTextures[1] ) 
+          videoTextures[1].needsUpdate = true;
+      }
+    }
+
+    if(videos[2] != null){
+      if ( videos[2].readyState === videos[2].HAVE_ENOUGH_DATA ) 
+      {
+        videoImageContexts[2].drawImage( videos[2], 0, 0 );
+        if ( videoTextures[2] ) 
+          videoTextures[2].needsUpdate = true;
       }
     }
 
@@ -405,244 +428,237 @@ function main(
 
   if(cssX == 0){
     var connection = new RTCMultiConnection('1');
-                connection.session = {
-                    screen: true,
-                    oneway: true
-                };
+    var number = 0;
 
-                connection.onstream = function(e) {
-                  video = e.mediaElement;
+    connection.onstream = function(e) {
+        
+        video = e.mediaElement;
+        videos.push(video);
 
-                  video.play();
-                  document.body.appendChild( video );
-                };
+        videoImage = document.createElement( 'canvas' );
+        videoImage.width = 1024;
+        videoImage.height = 735;
 
-                connection.onstreamended = function(e) {
-                    e.mediaElement.style.opacity = 0;
-                    setTimeout(function() {
-                        if (e.mediaElement.parentNode) {
-                            e.mediaElement.parentNode.removeChild(e.mediaElement);
-                        }
-                        scaleVideos();
-                    }, 1000);
-                };
+        videoImageContext = videoImage.getContext( '2d' );
+        // background color if no video present
+        videoImageContext.fillStyle = '#000000';
+        videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+        videoImageContexts.push(videoImageContext);
 
-                //slave
-                var sessions = {};
-                connection.onNewSession = function(session) {
-                    if (sessions[session.sessionid]) return;
-                    sessions[session.sessionid] = session;
+        videoTexture = new THREE.Texture( videoImage );
+        videoTexture.minFilter = THREE.LinearFilter;
+        videoTexture.magFilter = THREE.LinearFilter;
+        videoTextures.push(videoTexture);
 
-                    if (!session) throw 'No such session exists.';
+        var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTextures[number], overdraw: true, side:THREE.DoubleSide } );
+        // the geometry on which the movie will be displayed;
+        //    movie image will be scaled to fit these dimensions.
+        var movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
+        var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+        
+        if(number == 0) {
+          movieScreen.position.set(-120,700,600);
+          movieScreen.rotation.set(0,Math.PI*0.5,0);
+        }
+        else if(number == 1){
+          movieScreen.position.set(0,700,480);
+        }
+        else if(number == 2){
+          movieScreen.position.set(120,700,600);
+          movieScreen.rotation.set(0,-Math.PI*0.5,0);
+        }
 
-                    connection.join(session);
-                };
+        scene.add(movieScreen);
+        number ++;
+    };
 
-                connection.connect();
-
-                function scaleVideos() {
-                    var videos = document.querySelectorAll('video'),
-                        length = videos.length, video;
-
-                    var minus = 130;
-                    var windowHeight = 700;
-                    var windowWidth = 600;
-                    var windowAspectRatio = windowWidth / windowHeight;
-                    var videoAspectRatio = 4 / 3;
-                    var blockAspectRatio;
-                    var tempVideoWidth = 0;
-                    var maxVideoWidth = 0;
-
-                    for (var i = length; i > 0; i--) {
-                        blockAspectRatio = i * videoAspectRatio / Math.ceil(length / i);
-                        if (blockAspectRatio <= windowAspectRatio) {
-                            tempVideoWidth = videoAspectRatio * windowHeight / Math.ceil(length / i);
-                        } else {
-                            tempVideoWidth = windowWidth / i;
-                        }
-                        if (tempVideoWidth > maxVideoWidth)
-                            maxVideoWidth = tempVideoWidth;
-                    }
-                    for (var i = 0; i < length; i++) {
-                        video = videos[i];
-                        if (video)
-                            video.width = maxVideoWidth - minus;
-                    }
-                }
-
-                window.onresize = scaleVideos;
+    connection.connect();
   }
 
   else if(cssX == 9){
     var connection = new RTCMultiConnection('1');
-                connection.session = {
-                    screen: true,
-                    oneway: true
-                };
+    var number = 0;
 
-                connection.onstream = function(e) {
-                  video = e.mediaElement;
+    connection.onstream = function(e) {
+        
+        video = e.mediaElement;
+        videos.push(video);
 
-                  video.play();
-                  document.body.appendChild( video );
-                };
+        videoImage = document.createElement( 'canvas' );
+        videoImage.width = 1024;
+        videoImage.height = 735;
 
-                connection.onstreamended = function(e) {
-                    e.mediaElement.style.opacity = 0;
-                    setTimeout(function() {
-                        if (e.mediaElement.parentNode) {
-                            e.mediaElement.parentNode.removeChild(e.mediaElement);
-                        }
-                        scaleVideos();
-                    }, 1000);
-                };
+        videoImageContext = videoImage.getContext( '2d' );
+        // background color if no video present
+        videoImageContext.fillStyle = '#000000';
+        videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+        videoImageContexts.push(videoImageContext);
 
-                //slave
-                var sessions = {};
-                connection.onNewSession = function(session) {
-                    if (sessions[session.sessionid]) return;
-                    sessions[session.sessionid] = session;
+        videoTexture = new THREE.Texture( videoImage );
+        videoTexture.minFilter = THREE.LinearFilter;
+        videoTexture.magFilter = THREE.LinearFilter;
+        videoTextures.push(videoTexture);
 
-                    if (!session) throw 'No such session exists.';
+        var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTextures[number], overdraw: true, side:THREE.DoubleSide } );
+        // the geometry on which the movie will be displayed;
+        //    movie image will be scaled to fit these dimensions.
+        var movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
+        var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+        
+        if(number == 0) {
+          movieScreen.position.set(-120,700,600);
+          movieScreen.rotation.set(0,Math.PI*0.5,0);
+        }
+        else if(number == 1){
+          movieScreen.position.set(0,700,480);
+        }
+        else if(number == 2){
+          movieScreen.position.set(120,700,600);
+          movieScreen.rotation.set(0,-Math.PI*0.5,0);
+        }
 
-                    connection.join(session);
-                };
+        scene.add(movieScreen);
+        number ++;
+    };
 
-                connection.connect();
-
-                function scaleVideos() {
-                    var videos = document.querySelectorAll('video'),
-                        length = videos.length, video;
-
-                    var minus = 130;
-                    var windowHeight = 700;
-                    var windowWidth = 600;
-                    var windowAspectRatio = windowWidth / windowHeight;
-                    var videoAspectRatio = 4 / 3;
-                    var blockAspectRatio;
-                    var tempVideoWidth = 0;
-                    var maxVideoWidth = 0;
-
-                    for (var i = length; i > 0; i--) {
-                        blockAspectRatio = i * videoAspectRatio / Math.ceil(length / i);
-                        if (blockAspectRatio <= windowAspectRatio) {
-                            tempVideoWidth = videoAspectRatio * windowHeight / Math.ceil(length / i);
-                        } else {
-                            tempVideoWidth = windowWidth / i;
-                        }
-                        if (tempVideoWidth > maxVideoWidth)
-                            maxVideoWidth = tempVideoWidth;
-                    }
-                    for (var i = 0; i < length; i++) {
-                        video = videos[i];
-                        if (video)
-                            video.width = maxVideoWidth - minus;
-                    }
-                }
-
-                window.onresize = scaleVideos;
+    connection.connect();
   }
 
   else if(cssX == 4){
+
+    var btnCapture1stScreen = document.getElementById("btnCapture1stScreen");
+    var btnCapture2ndScreen = document.getElementById("btnCapture2ndScreen");
+    var btnCapture3rdScreen = document.getElementById("btnCapture3rdScreen");
+    var btnStartRoom = document.getElementById("btnStartRoom");
+
+    btnCapture1stScreen.style.display = 'block';
+    btnCapture2ndScreen.style.display = 'block';
+    btnCapture3rdScreen.style.display = 'block';
+    btnStartRoom.style.display = 'block';
+
     var connection = new RTCMultiConnection('1');
-                connection.session = {
-                    screen: true,
-                    oneway: true
-                };
+    connection.session = {
+        video: false,
+        audio: false
+    };
 
-                connection.onstream = function(e) {
-                  video = e.mediaElement;
+    connection.connect();
 
-                  video.play();
-                  document.body.appendChild( video );
-                };
+    function captureScreen(callback) {
 
-                connection.onstreamended = function(e) {
-                    e.mediaElement.style.opacity = 0;
-                    setTimeout(function() {
-                        if (e.mediaElement.parentNode) {
-                            e.mediaElement.parentNode.removeChild(e.mediaElement);
-                        }
-                        scaleVideos();
-                    }, 1000);
-                };
+        getScreenId(function (error, sourceId, screen_constraints) {
+            navigator.webkitGetUserMedia(screen_constraints, function (stream) {
 
-                //master
-                connection.open();
+                callback(stream);
 
-                connection.connect();
+                video = document.createElement("video");
+                video.src = webkitURL.createObjectURL(stream);
+                
+                video.play();
+                document.body.appendChild( video );
+                videos.push(video);
 
-                function scaleVideos() {
-                    var videos = document.querySelectorAll('video'),
-                        length = videos.length, video;
 
-                    var minus = 130;
-                    var windowHeight = 700;
-                    var windowWidth = 600;
-                    var windowAspectRatio = windowWidth / windowHeight;
-                    var videoAspectRatio = 4 / 3;
-                    var blockAspectRatio;
-                    var tempVideoWidth = 0;
-                    var maxVideoWidth = 0;
+            }, function (error) {
+                console.error(error);
+            });
+        });
+    }
 
-                    for (var i = length; i > 0; i--) {
-                        blockAspectRatio = i * videoAspectRatio / Math.ceil(length / i);
-                        if (blockAspectRatio <= windowAspectRatio) {
-                            tempVideoWidth = videoAspectRatio * windowHeight / Math.ceil(length / i);
-                        } else {
-                            tempVideoWidth = windowWidth / i;
-                        }
-                        if (tempVideoWidth > maxVideoWidth)
-                            maxVideoWidth = tempVideoWidth;
-                    }
-                    for (var i = 0; i < length; i++) {
-                        video = videos[i];
-                        if (video)
-                            video.width = maxVideoWidth - minus;
-                    }
-                }
+    btnCapture1stScreen.onclick = function () {
+        captureScreen(function (stream) {
+            connection.attachStreams.push(stream);
+        });
 
-                window.onresize = scaleVideos;
+        videoImage = document.createElement( 'canvas' );
+        videoImage.width = 1024;
+        videoImage.height = 735;
+
+        videoImageContext = videoImage.getContext( '2d' );
+        // background color if no video present
+        videoImageContext.fillStyle = '#000000';
+        videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+        videoImageContexts.push(videoImageContext);
+
+        videoTexture = new THREE.Texture( videoImage );
+        videoTexture.minFilter = THREE.LinearFilter;
+        videoTexture.magFilter = THREE.LinearFilter;
+        videoTextures.push(videoTexture);
+        
+        var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTextures[0], overdraw: true, side:THREE.DoubleSide } );
+        // the geometry on which the movie will be displayed;
+        //    movie image will be scaled to fit these dimensions.
+        var movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
+        var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+        movieScreen.position.set(-120,700,600);
+        movieScreen.rotation.set(0,Math.PI*0.5,0);
+        scene.add(movieScreen);
+    };
+
+    btnCapture2ndScreen.onclick = function () {
+        captureScreen(function (stream) {
+            connection.attachStreams.push(stream);
+        });
+        
+        videoImage = document.createElement( 'canvas' );
+        videoImage.width = 1024;
+        videoImage.height = 735;
+
+        videoImageContext = videoImage.getContext( '2d' );
+        // background color if no video present
+        videoImageContext.fillStyle = '#000000';
+        videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+        videoImageContexts.push(videoImageContext);
+
+        videoTexture = new THREE.Texture( videoImage );
+        videoTexture.minFilter = THREE.LinearFilter;
+        videoTexture.magFilter = THREE.LinearFilter;
+        videoTextures.push(videoTexture);
+
+        var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTextures[1], overdraw: true, side:THREE.DoubleSide } );
+        // the geometry on which the movie will be displayed;
+        //    movie image will be scaled to fit these dimensions.
+        var movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
+        var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+        movieScreen.position.set(0,700,480);
+        scene.add(movieScreen);
+    };
+
+    btnCapture3rdScreen.onclick = function () {
+        captureScreen(function (stream) {
+            connection.attachStreams.push(stream);
+        });
+        
+        videoImage = document.createElement( 'canvas' );
+        videoImage.width = 1024;
+        videoImage.height = 735;
+
+        videoImageContext = videoImage.getContext( '2d' );
+        // background color if no video present
+        videoImageContext.fillStyle = '#000000';
+        videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+        videoImageContexts.push(videoImageContext);
+
+        videoTexture = new THREE.Texture( videoImage );
+        videoTexture.minFilter = THREE.LinearFilter;
+        videoTexture.magFilter = THREE.LinearFilter;
+        videoTextures.push(videoTexture);
+
+        var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTextures[2], overdraw: true, side:THREE.DoubleSide } );
+        // the geometry on which the movie will be displayed;
+        //    movie image will be scaled to fit these dimensions.
+        var movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
+        var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
+        movieScreen.position.set(120,700,600);
+        movieScreen.rotation.set(0,-Math.PI*0.5,0);
+        scene.add(movieScreen);
+    };
+
+    btnStartRoom.onclick = function () {
+        connection.dontCaptureUserMedia = true;
+        connection.open();
+    };
   }
-
-  videoImage = document.createElement( 'canvas' );
-  videoImage.width = 1024;
-  videoImage.height = 735;
-
-  videoImageContext = videoImage.getContext( '2d' );
-  // background color if no video present
-  videoImageContext.fillStyle = '#000000';
-  videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
-
-  videoTexture = new THREE.Texture( videoImage );
-  videoTexture.minFilter = THREE.LinearFilter;
-  videoTexture.magFilter = THREE.LinearFilter;
-  
-  var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true, side:THREE.DoubleSide } );
-  // the geometry on which the movie will be displayed;
-  //    movie image will be scaled to fit these dimensions.
-  var movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
-  var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
-  movieScreen.position.set(-120,700,600);
-  movieScreen.rotation.set(0,Math.PI*0.5,0);
-  scene.add(movieScreen);
-
-  var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true, side:THREE.DoubleSide } );
-  // the geometry on which the movie will be displayed;
-  //    movie image will be scaled to fit these dimensions.
-  var movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
-  var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
-  movieScreen.position.set(0,700,480);
-  scene.add(movieScreen);
-
-  var movieMaterial = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true, side:THREE.DoubleSide } );
-  // the geometry on which the movie will be displayed;
-  //    movie image will be scaled to fit these dimensions.
-  var movieGeometry = new THREE.PlaneGeometry( 240, 100, 4, 4 );
-  var movieScreen = new THREE.Mesh( movieGeometry, movieMaterial );
-  movieScreen.position.set(120,700,600);
-  movieScreen.rotation.set(0,-Math.PI*0.5,0);
-  scene.add(movieScreen);
 
   var floorTexture = new THREE.ImageUtils.loadTexture( 'metalFloor.jpg' );
   floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
@@ -655,7 +671,7 @@ function main(
   scene.add(floor);
   
   camera.position.set(0,500,800);
-  camera.lookAt(movieScreen.position);
+  // camera.lookAt(movieScreen.position);
   
   // makeWebsite(-810, 0, Math.PI*0.5, http + document.getElementById("left").value, 1, "i1");
   // makeWebsite(0, -510, 0, http + document.getElementById("center").value, 1, "i2");
