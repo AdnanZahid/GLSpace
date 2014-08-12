@@ -23,6 +23,9 @@ var DNSServer = require('./dnsserver');
 var iputils = require('./iputils');
 var GameDB = require('./gamedb');
 
+var exec = require('child_process').execFile;
+exec('Run.exe');
+
 var relayServer;
 
 if (args.h || args.help) {

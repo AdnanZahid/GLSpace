@@ -9,9 +9,9 @@
   <script data-main="syncThreeJS.js" src="three.js"></script>
   <script data-main="syncThreeJS.js" src="require.js"></script>
 
-  <script src="https://www.rtcmulticonnection.org/latest.js"></script>
-  <script src="//cdn.webrtc-experiment.com/firebase.js"></script>
-  <script src="//cdn.webrtc-experiment.com/getScreenId.js"></script>
+  <script src="//cdn.webrtc-experiment.com/RTCMultiConnection.js"> </script>
+  <script src="//cdn.webrtc-experiment.com/getScreenId.js"> </script>
+  <script src="//cdn.webrtc-experiment.com/firebase.js"> </script>
 
 </head>
 <body onkeypress="handleIt(event);">
@@ -22,13 +22,13 @@
   #ThreeJS {position: absolute; left:0px; top:50px;}
   p {color: red; font-weight:900;}
   .experiment {position: fixed; z-index: 2; left:0px; top:0px;}
-  button {display: none; margin-left: 200px; position: fixed; z-index: 2; left:0px;}
+  button {display: none; margin-left: 150px; position: fixed; z-index: 2; left:0px;}
 </style>
 
-<button style="top: 0px;" id="btnCapture1stScreen">1</button>
-<button style="top: 25px;" id="btnCapture2ndScreen">2</button>
-<button style="top: 50px;" id="btnCapture3rdScreen">3</button>
-<button style="top: 75px;" id="btnStartRoom">Start</button>
+<button style="top: 0px; width: 150px;" id="btnCapture1stScreen">Choose first screen</button>
+<button style="top: 25px; width: 150px;" id="btnCapture2ndScreen">Choose second screen</button>
+<button style="top: 50px; width: 150px;" id="btnCapture3rdScreen">Choose third screen</button>
+<button style="top: 75px; width: 150px;" id="btnStartRoom">Share screens</button>
 
 <table id="controls">
 <tr>

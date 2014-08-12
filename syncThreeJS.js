@@ -16,22 +16,22 @@ var cssX = loc.charAt(loc.indexOf("x:")+2);
 
 function go() {
 
-  if(document.activeElement.id=="left")
-    elements[0].src = http + document.getElementById("left").value;
-  else if(document.activeElement.id=="center")
-    elements[1].src = http + document.getElementById("center").value;
-  else if(document.activeElement.id=="right")
-    elements[2].src = http + document.getElementById("right").value;
-  else if(document.activeElement.id=="back")
-    elements[3].src = http + document.getElementById("back").value;
+	if(document.activeElement.id=="left")
+		elements[0].src	= http + document.getElementById("left").value;
+	else if(document.activeElement.id=="center")
+		elements[1].src	= http + document.getElementById("center").value;
+	else if(document.activeElement.id=="right")
+		elements[2].src	= http + document.getElementById("right").value;
+	else if(document.activeElement.id=="back")
+		elements[3].src	= http + document.getElementById("back").value;
 }
 
 function handleIt(e) {
 
-    if (e.which == 13){
-      go();
-      e.preventDefault();
-    }
+  	if (e.which == 13){
+	    go();
+	    e.preventDefault();
+	  }
 }
 
 $(document).ready(function(){
@@ -242,7 +242,7 @@ function main(
 
     scene.add(planeMesh);
 
-    var element=document.getElementById(id);
+    var	element=document.getElementById(id);
 
     elements.push(element);
 
@@ -272,17 +272,17 @@ function main(
 
     if ( keyboard.pressed("w") ) 
     {
-      globals.shared.leftOffSet -= 3.25;
-      globals.shared.rightOffSet -= 3.25;
+  		globals.shared.leftOffSet -= 3.25;
+  		globals.shared.rightOffSet -= 3.25;
       zeOffset -= 3.25;
       globals.shared.zOffSet = zeOffset;
-      camera.translateZ(-10);
+  		camera.translateZ(-10);
     }
     else if ( keyboard.pressed("s") ) 
     {
-      globals.shared.leftOffSet += 3.25;
-      globals.shared.rightOffSet += 3.25;
-      zeOffset += 3.25;
+  		globals.shared.leftOffSet += 3.25;
+  		globals.shared.rightOffSet += 3.25;
+  		zeOffset += 3.25;
       globals.shared.zOffSet = zeOffset;
       camera.translateZ(10);
     }
@@ -321,7 +321,7 @@ function main(
     }
     else if ( keyboard.pressed("r") ) 
     {
-      window.location = window.location;
+    	window.location = window.location;
     }
 
     else if ( keyboard.pressed("f") ) {
@@ -338,7 +338,7 @@ function main(
     }
 
     else if ( keyboard.pressed("t") ) {
-        alert(globals.shared.cameraPosition.y);
+    		alert(globals.shared.cameraPosition.y);
     }
 
     if(cssX == 4) {
@@ -347,7 +347,7 @@ function main(
       server.broadcastCmd('set', { rightOffSet: globals.shared.rightOffSet });
       server.broadcastCmd('set', { cameraPosition: {x: camera.position.x, y: camera.position.y, z: camera.position.z }});
       server.broadcastCmd('set', { cameraRotation: {x: camera.rotation.x, y: camera.rotation.y, z: camera.rotation.z }});
-    }
+  	}
   }
 
   function render() {
@@ -362,7 +362,7 @@ function main(
         canvas.clientWidth, canvas.clientHeight);
     camera.aspect = canvas.clientWidth / canvas.clientHeight;
 
-    camera.fov    = globals.shared.fieldOfView;
+	  camera.fov    = globals.shared.fieldOfView;
     
     camera.zNear  = globals.shared.zNear;
     camera.zFar   = globals.shared.zFar;
@@ -415,15 +415,15 @@ function main(
 
     requestAnimationFrame(render);
 
-  if(document.activeElement.id!="left" && document.activeElement.id!="center" && document.activeElement.id!="right" && document.activeElement.id!="back") {
-      update();
-  }
-  else {
-      if ( keyboard.pressed("enter") ) 
-      {
-        server.broadcastCmd('set', { webpages: {left: document.getElementById("left").value, center: document.getElementById("center").value, right: document.getElementById("right").value}});
-      }
-  }
+	if(document.activeElement.id!="left" && document.activeElement.id!="center" && document.activeElement.id!="right" && document.activeElement.id!="back") {
+    	update();
+	}
+	else {
+	    if ( keyboard.pressed("enter") ) 
+	    {
+    		server.broadcastCmd('set', { webpages: {left: document.getElementById("left").value, center: document.getElementById("center").value, right: document.getElementById("right").value}});
+	    }
+	}
   };
 
   if(cssX == 0){

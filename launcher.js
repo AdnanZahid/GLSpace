@@ -1,6 +1,6 @@
 "use strict";
 
-window.launch = function(opt) {
+window.onload = function(opt) {
   opt = opt || {};
 
   var numWindows = 3;
