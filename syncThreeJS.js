@@ -167,64 +167,6 @@ function main(
   light.position.set(0,400,400);
   scene.add(light);
 
-  // var floorTexture = new THREE.ImageUtils.loadTexture( 'metalFloor.jpg' );
-  // floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
-  // floorTexture.repeat.set( 10, 10 );
-  // var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
-  // var floorGeometry = new THREE.PlaneGeometry(1024, 1024, 10, 10);
-  // var floor = new THREE.Mesh(floorGeometry, floorMaterial);
-  // floor.position.y = -0.5;
-  // floor.rotation.x = Math.PI / 2;
-  // scene.add(floor);
-
-  // var loader = new THREE.OBJMTLLoader();
-  // loader.addEventListener( 'load', function ( event ) {
-
-  //   var object = event.content;
-
-  //   object.position.y = -850;
-  //   object.position.z = -10;
-
-  //   object.position.x = -855;
-  //   object.rotation.y = Math.PI*0.5;
-
-  //   object.scale.set(20,20,20);
-  //   scene.add( object );
-
-  // });
-  // loader.load( 'pc_obj.obj', 'pc_obj.obj.mtl' );
-
-  // var loader = new THREE.OBJMTLLoader();
-  // loader.addEventListener( 'load', function ( event ) {
-
-  //   var object = event.content;
-
-  //   object.position.y = -850;
-  //   object.position.z = -560;
-  //   object.scale.set(20,20,20);
-  //   scene.add( object );
-
-  // });
-  // loader.load( 'pc_obj.obj', 'pc_obj.obj.mtl' );
-
-
-  // var loader = new THREE.OBJMTLLoader();
-  // loader.addEventListener( 'load', function ( event ) {
-
-  //   var object = event.content;
-
-  //   object.position.y = -850;
-  //   object.position.z = -10;
-
-  //   object.position.x = 855;
-  //   object.rotation.y = -Math.PI*0.5;
-
-  //   object.scale.set(20,20,20);
-  //   scene.add( object );
-
-  // });
-  // loader.load( 'pc_obj.obj', 'pc_obj.obj.mtl' );
-
   var rendererCSS;
 
   function makeWebsite(positionX, positionZ, rotationY, website, notInverted, id) {
@@ -245,22 +187,8 @@ function main(
     var	element=document.getElementById(id);
 
     elements.push(element);
-
-    // var elementWidth = 1024;
-
-    // var aspectRatio = planeHeight / planeWidth;
-    // var elementHeight = elementWidth * aspectRatio;
-
-    // element.style.width  = elementWidth + "px";
-    // element.style.height = elementHeight + "px";
-    // cssObject.position = planeMesh.position;
-    // cssObject.rotation = planeMesh.rotation;
-    // element.style.display = "block";
     
     var cssObject = new THREE.CSS3DObject( element );
-    
-    // cssObject.scale.x /= elementWidth / planeWidth;
-    // cssObject.scale.y /= elementWidth / planeWidth;
 
     cssScene.add(cssObject);
 
@@ -673,9 +601,6 @@ function main(
   camera.position.set(0,500,800);
   // camera.lookAt(movieScreen.position);
   
-  // makeWebsite(-810, 0, Math.PI*0.5, http + document.getElementById("left").value, 1, "i1");
-  // makeWebsite(0, -510, 0, http + document.getElementById("center").value, 1, "i2");
-  // makeWebsite(810, 0, -Math.PI*0.5, http + document.getElementById("right").value, 1, "i3");
   render();
 };
 
