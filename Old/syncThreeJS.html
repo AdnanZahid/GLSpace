@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <title>Sync Three.js</title>
+  <link rel="stylesheet" href="syncThreeJS.css">
+
+  <iframe style="width: 1024px; height: 1024px; display: none;" id="i1" src="http://adnan-zahid.eu5.org"></iframe>
+  <iframe style="width: 1024px; height: 1024px; display: none;" id="i2" src="http://adnan-zahid.eu5.org"></iframe>
+  <iframe style="width: 1024px; height: 1024px; display: none;" id="i3" src="http://adnan-zahid.eu5.org"></iframe>
+
+  <script data-main="syncThreeJS.js" src="jquery.js"></script>
+  <script data-main="syncThreeJS.js" src="three.js"></script>
+  <script data-main="syncThreeJS.js" src="require.js"></script>
+
+</head>
+<body onkeypress="handleIt(event);">
+<style>
+  textarea {resize: none; float: left;}
+  table {display: none; position: fixed; z-index: 2; left:0px; top:0px;}
+  #ThreeJS {position: absolute; left:0px; top:50px;}
+  p {color: red; font-weight:900;}
+</style>
+
+<table id="controls">
+<tr>
+<td><p>Left:</p></td>
+<td>
+  <textarea onfocus="this.select();" id="left" rows="1" cols="40"></textarea>
+</td>
+</tr>
+
+<tr>
+<td><p>Center:</p></td>
+<td>
+  <textarea onfocus="this.select();" id="center" rows="1" cols="40"></textarea>
+</td>
+</tr>
+
+<tr>
+<td><p>Right:</p></td>
+<td>
+  <textarea onfocus="this.select();" id="right" rows="1" cols="40"></textarea>
+</td>
+</tr>
+
+<tr>
+<td>
+  <textarea style="display: none;" onfocus="this.select();" id="back" rows="1" cols="40">adnan-zahid.eu5.org</textarea>
+</td>
+</tr>
+</table>
+  
+  <canvas id="c"></canvas>
+  <div id="ThreeJS"></div>
+
+</body>
+</html>

@@ -1,0 +1,11 @@
+
+  <style type="text/css">
+  textarea { resize: none; float: left; }
+  table { display: none; position: fixed; z-index: 2; left:0px; top:0px; }
+  #ThreeJS { position: absolute; left:0px; top:50px; }
+  p { color: red; font-weight:900; }
+  </style>
+
+  <div class="ifra" id="i1"><object class="ifro" type="text/html" data="ny.jpg"></object></div>
+  <div class="ifra" id="i2"><object class="ifro" type="text/html" data="ny.jpg"></object></div>
+  <div class="ifra" id="i3"><object class="ifro" type="text/html" data="ny.jpg"></object></div>

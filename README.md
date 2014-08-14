@@ -3,6 +3,8 @@ GLSpace
 
 Taking 3D websites to multiple screens.
 
+For a quick glance, look at http://adnan-zahid.eu5.org/GLSpace or https://github.com/AdnanZahid/GLSpace/tree/master/Single_Screen
+
 Code heavily borrowed from Gregg Tavares's project Happy Fun Times  (https://github.com/greggman/HappyFunTimes/tree/master/public/examples/syncThreeJS)
 
 and from Muaz Khan's project WebRTC-Experiment
@@ -14,7 +16,7 @@ This project requires NodeJS to run. Download it from here http://nodejs.org/dow
 Apart from that, Google Chrome is a must and it is recommended to run it on Microsoft Windows.
 
 If that is not the case, you need to follow step-by-step instructions to run it on other platforms.
-
+(https://github.com/AdnanZahid/GLSpace/blob/master/Docs/Step-by-step%20instructions%20for%20non-windows-users.mdown)
 
 Now, assuming you have NodeJS installed and running (and you have configured environment variables), go to Command Prompt, navigate to the project directory and run
 

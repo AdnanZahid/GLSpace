@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Welcome to GLSpace</title>
+</head>
+<body onkeypress="handleIt(event);">
+
+<script src="Three.js"></script>
+<script src="Detector.js"></script>
+<script src="CSS3DRenderer.js"></script>
+<script src="THREEx.KeyboardState.js"></script>
+<style>
+	textarea {resize: none; float: left;}
+	table {position: fixed; z-index: 2; left:0px; top:0px;}
+	#ThreeJS {position: absolute; left:0px; top:50px;}
+	h1 {text-align: center}
+</style>
+
+<table>
+<tr>
+  <td><textarea onfocus="this.select();" id="left" rows="1" cols="40">liquidgalaxy.endpoint.com</textarea></td>
+  <td><textarea onfocus="this.select();" id="center" rows="1" cols="40">www.google.com/custom</textarea></td> 
+  <td><textarea onfocus="this.select();" id="right" rows="1" cols="40">www.google.com.pk/earth/explore/showcase/liquidgalaxy.html</textarea></td> 
+  <td><textarea onfocus="this.select();" id="back" rows="1" cols="40">www.google.com/custom</textarea></td>
+</tr>
+</table>
+
+<div id="ThreeJS"></div>
+
+<script>
+
+var http = "http://";
+
+var cssScenes = [];
+var elements = [];
+
+var container, scene, camera, renderer, element;
+
+var keyboard = new THREEx.KeyboardState();
+
+var rendererCSS;
+
+init();
+animate();
+
+function init() 
+{
+	scene = new THREE.Scene();
+
+	var SCREEN_WIDTH = window.innerWidth, SCREEN_HEIGHT = window.innerHeight;
+	var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+	
+	camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR);
+	scene.add(camera);
+	camera.position.set(0,700,500);
+
+	if ( Detector.webgl )
+		renderer = new THREE.WebGLRenderer( {antialias:true} );
+	else
+		renderer = new THREE.CanvasRenderer(); 
+	
+	renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	container = document.getElementById( 'ThreeJS' );
+	container.appendChild( renderer.domElement );
+
+	var light = new THREE.PointLight(0xffffff);
+	light.position.set(0,250,0);
+	scene.add(light);
+
+	var floorTexture = new THREE.ImageUtils.loadTexture( 'metalFloor.jpg' );
+	floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping; 
+	floorTexture.repeat.set( 10, 10 );
+	var floorMaterial = new THREE.MeshBasicMaterial( { map: floorTexture, side: THREE.DoubleSide } );
+	var floorGeometry = new THREE.PlaneGeometry(1024, 1024, 10, 10);
+	var floor = new THREE.Mesh(floorGeometry, floorMaterial);
+	floor.position.y = -0.5;
+	floor.rotation.x = Math.PI / 2;
+	scene.add(floor);
+
+	makeWebsite(-510, 0, Math.PI*0.5, http + document.getElementById("left").value, 1);
+	makeWebsite(0, -510, 0, http + document.getElementById("center").value, 1);
+	makeWebsite(510, 0, -Math.PI*0.5, http + document.getElementById("right").value, 1);
+	makeWebsite(0, 510, 0, http + document.getElementById("back").value, -1);
+	
+}
+
+function makeWebsite(positionX, positionZ, rotationY, website, notInverted) {
+
+	var planeMaterial   = new THREE.MeshBasicMaterial({color: 0x000000, opacity: 0, side: THREE.DoubleSide });
+	var planeWidth = 1024;
+    var planeHeight = 1024;
+	var planeGeometry = new THREE.PlaneGeometry( planeWidth, planeHeight );
+	var planeMesh= new THREE.Mesh( planeGeometry, planeMaterial );
+	
+	planeMesh.position.x = positionX;
+	planeMesh.position.y += planeHeight/2;
+	planeMesh.position.z = positionZ;
+	planeMesh.rotation.y = rotationY;
+
+	scene.add(planeMesh);
+	
+	var cssScene = new THREE.Scene();
+
+	element	= document.createElement('iframe')
+
+	element.src	= website;
+
+	elements.push(element);
+
+	var elementWidth = 1024;
+
+	var aspectRatio = planeHeight / planeWidth;
+	var elementHeight = elementWidth * aspectRatio;
+	element.style.width  = elementWidth + "px";
+	element.style.height = elementHeight + "px";
+	
+	var cssObject = new THREE.CSS3DObject( element );
+
+	cssObject.position = planeMesh.position;
+	cssObject.rotation = planeMesh.rotation;
+
+	var percentBorder = 0.05;
+	cssObject.scale.x /= elementWidth / planeWidth;
+	cssObject.scale.x *= notInverted; 
+	cssObject.scale.y /= elementWidth / planeWidth;
+	cssScene.add(cssObject);
+	
+	rendererCSS	= new THREE.CSS3DRenderer();
+	rendererCSS.setSize( window.innerWidth, window.innerHeight );
+	rendererCSS.domElement.style.position = 'absolute';
+	rendererCSS.domElement.style.top	  = 0;
+	rendererCSS.domElement.style.margin	  = 0;
+	rendererCSS.domElement.style.padding  = 0;
+	document.getElementById("ThreeJS").appendChild( rendererCSS.domElement );
+
+	renderer.domElement.style.position = 'absolute';
+	renderer.domElement.style.top      = 0;
+	renderer.domElement.style.zIndex   = 1;
+	rendererCSS.domElement.appendChild( renderer.domElement );
+
+
+	cssScenes.push(cssScene);
+}
+
+function animate() 
+{
+    requestAnimationFrame( animate );
+	render();
+	if(document.activeElement.id!="left" && document.activeElement.id!="center" && document.activeElement.id!="right" && document.activeElement.id!="back") {
+		update();
+	}
+}
+
+function update()
+{
+    if ( keyboard.pressed("w") ) 
+    {
+  	camera.translateZ(-10);
+    }
+    else if ( keyboard.pressed("s") ) 
+    {
+  	camera.translateZ(10);
+    }
+    else if ( keyboard.pressed("a") ) 
+    {
+      camera.rotation.y += 0.005;
+    }
+    else if ( keyboard.pressed("d") ) 
+    {
+      camera.rotation.y -= 0.005;
+    }
+
+    else if ( keyboard.pressed("up") ) 
+    {
+      camera.translateY(10);
+    }
+    else if ( keyboard.pressed("down") ) 
+    { 
+      camera.translateY(-10);
+    }
+    else if ( keyboard.pressed("left") ) 
+    {
+      camera.translateX(-10);
+    }
+    else if ( keyboard.pressed("right") ) 
+    {
+      camera.translateX(10);
+    }
+}
+
+function render() 
+{
+
+	for ( var i = 0; i < cssScenes.length; ++ i ) {			
+		rendererCSS.render( cssScenes[ i ], camera );
+	}
+
+	renderer.render( scene, camera );
+}
+
+function setFocusLeft() {
+	document.getElementById("left").focus();
+}
+
+function setFocusCenter() {
+	document.getElementById("center").focus();
+}
+
+function setFocusRight() {
+	document.getElementById("right").focus();
+}
+
+function go() {
+
+	if(document.activeElement.id=="left")
+		elements[0].src	= http + document.getElementById("left").value;
+	if(document.activeElement.id=="center")
+		elements[1].src	= http + document.getElementById("center").value;
+	if(document.activeElement.id=="right")
+		elements[2].src	= http + document.getElementById("right").value;
+	if(document.activeElement.id=="back")
+		elements[3].src	= http + document.getElementById("back").value;
+}
+
+function handleIt(e) {
+
+	if(e.which) {					
+        keynum = e.which;
+    }
+
+    if (keynum == 13) {
+    	go();
+    	e.preventDefault();
+    }
+}
+
+</script>
+
+</body>
+</html>
