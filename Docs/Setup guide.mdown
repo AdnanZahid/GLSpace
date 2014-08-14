@@ -15,6 +15,7 @@ Apart from that, Google Chrome is a must and it is recommended to run it on Micr
 
 If that is not the case, you need to follow step-by-step instructions to run it on other platforms.
 
+Before you do anything, install this Chrome Extension (https://chrome.google.com/webstore/detail/screen-capturing/ajhifddimkapgcifgcodmmfdlknahffk)
 
 Now, assuming you have NodeJS installed and running (and you have configured environment variables), go to Command Prompt, navigate to the project directory and run
 

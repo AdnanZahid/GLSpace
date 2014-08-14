@@ -3,22 +3,24 @@ Step-by-step instructions for non-windows-users
 
 This project requires NodeJS to run. Download it from here http://nodejs.org/download
 
-1) Assuming you have NodeJS installed and running (and you have configured environment variables), go to Terminal, navigate to the project directory and run
+1) Install this Chrome Extension (https://chrome.google.com/webstore/detail/screen-capturing/ajhifddimkapgcifgcodmmfdlknahffk)
+
+2) Assuming you have NodeJS installed and running (and you have configured environment variables), go to Terminal, navigate to the project directory and run
 
 							"node server.js"
 
-2) Run Chrome (not Chromium or any other browser) from Command Line using these flags "--enable-usermedia-screen-capturing --allow-http-screen-capture"
+3) Run Chrome (not Chromium or any other browser) from Command Line using these flags "--enable-usermedia-screen-capturing --allow-http-screen-capture"
 
-3) Disable pop-up blockers in Chrome.
+4) Disable pop-up blockers in Chrome.
 
-4) Open three windows of Chrome with any websites you want.
+5) Open three windows of Chrome with any websites you want.
 
-5) Open another window and point it to "http://localhost:8080/launcher.html" or simply "http://localhost/launcher.html" (if your Port 80 is not blocked).
+6) Open another window and point it to "http://localhost:8080/launcher.html" or simply "http://localhost/launcher.html" (if your Port 80 is not blocked).
 
-6) Use "Share 1st screen", "Share 2nd screen" and "Share 3rd screen" buttons to share the Chrome windows.
+7) Use "Share 1st screen", "Share 2nd screen" and "Share 3rd screen" buttons to share the Chrome windows.
 
-7) Next, hit "Synchronize screens". If all goes correctly, it should synchronize GLSpace across all three of your screens.
+8) Next, hit "Synchronize screens". If all goes correctly, it should synchronize GLSpace across all three of your screens.
 
-8) Navigate using "WASD" or "Directional Keys".
+9) Navigate using "WASD" or "Directional Keys".
 
 If anything is unclear, email me at adonztevez@ymail.com
