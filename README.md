@@ -1,6 +1,12 @@
 GLSpace
 =======
 
+**Video demo:**
+
+https://github.com/user-attachments/assets/9ce0e8cf-7682-4e63-9d6e-5e125ebfae77
+
+**Project description:**
+
 Taking 3D websites to multiple screens.
 
 For a quick glance, look at http://adnan-zahid.eu5.org/GLSpace or https://github.com/AdnanZahid/GLSpace/tree/master/Single_Screen
@@ -33,4 +39,4 @@ Now use "directional keys" and "WASD" to navigate. This project features every k
 
 Navigate your way around GLSpace and enjoy!
 
-If you have any questions, feel free to email me at adonztevez@ymail.com
+If you have any questions, feel free to email me at adnaan.zaahid@gmail.com
